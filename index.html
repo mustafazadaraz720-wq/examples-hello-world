@@ -1,80 +1,1915 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="az">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, Deno</title>
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Recursive_Variable.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="https://demo-styles.deno.deno.net/styles.css">
-  <style>
-    img {
-      display: inline-block;
-      vertical-align: middle;
-    }
-  </style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Professional Test Sistemi | Tam Təkmilləşdirilmiş</title>
+    <!-- QR Code generator library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark-bg: #1e1e2f;
+            --light-bg: #f3f4f6;
+            --dark-text: #e5e7eb;
+            --light-text: #1f2937;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%);
+        }
+
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            min-width: 250px;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            transform: translateX(400px);
+            animation: slideIn 0.3s forwards, fadeOut 0.5s 3s forwards;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+        }
+
+        .toast.success { background: rgba(16, 185, 129, 0.9); }
+        .toast.error { background: rgba(239, 68, 68, 0.9); }
+        .toast.warning { background: rgba(245, 158, 11, 0.9); }
+        .toast.info { background: rgba(99, 102, 241, 0.9); }
+
+        @keyframes slideIn { to { transform: translateX(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(400px); } }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show { display: flex; }
+
+        .modal-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--glass-shadow);
+            transform: scale(0.9);
+            animation: scaleIn 0.3s forwards;
+        }
+
+        body.dark-mode .modal-content {
+            background: rgba(30,30,47,0.95);
+            color: var(--dark-text);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { to { transform: scale(1); } }
+
+        .auth-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            color: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.3);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .password-strength {
+            height: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            background: #ddd;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s;
+        }
+
+        .strength-bar.weak { background: var(--danger); width: 33%; }
+        .strength-bar.medium { background: var(--warning); width: 66%; }
+        .strength-bar.strong { background: var(--success); width: 100%; }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1rem;
+            transition: var(--transition);
+        }
+
+        .sidebar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li a.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            min-width: 300px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            overflow: hidden;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        th {
+            background: rgba(0,0,0,0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge.active { background: var(--success); color: white; }
+        .badge.blocked { background: var(--danger); color: white; }
+        .badge.pending { background: var(--warning); color: white; }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            gap: 0.5rem;
+        }
+
+        .difficulty {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .difficulty.easy { background: var(--success); }
+        .difficulty.medium { background: var(--warning); }
+        .difficulty.hard { background: var(--danger); }
+
+        .hidden { display: none !important; }
+
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .justify-between { justify-content: space-between; }
+        .justify-end { justify-content: flex-end; }
+        .align-center { align-items: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .w-100 { width: 100%; }
+
+        .theme-switch {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+            font-size: 1.5rem;
+        }
+
+        .theme-switch:hover {
+            transform: scale(1.1);
+        }
+
+        .qr-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+            font-size: 24px;
+        }
+
+        .qr-button:hover {
+            transform: scale(1.1);
+        }
+
+        .subject-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .subject-tab {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .subject-tab:hover,
+        .subject-tab.active {
+            background: var(--primary);
+        }
+
+        /* Test həll etmə üçün əlavə stillər */
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .question-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-item:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .option-item.selected {
+            background: var(--primary);
+        }
+
+        .test-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+            .admin-layout {
+                flex-direction: column;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
 <body>
-    <main>
-      <section>
-        <a href="https://deno.com/deploy">
-        </a>
-      <h1>
-        <p>
-          Hello, Deno!
-        </p>
-      </h1>
-      <p>
-        This little example is being served by <a href="https://deno.com/">Deno</a>.
-        You can run it locally or in porduction on <a href="https://deno.com/deploy">Deno Deploy</a> or other hosting platforms.
-      </p>
-      <ul>
-        <li>Run it locally with<code>deno task dev</code></li>
-        <li>Deploy it to <a href="https://deno.com/deploy">Deno Deploy</a> via the CLI by running<code>deno deploy</code></li>
-        <li>Run it locally and share it publically by running <code>deno deploy --connected</code></li>
-      </ul>
-    </section>
-      <hr>
-    <section>
-      <h2>What's next?</h2>
-      <p>
-        You can clone this example and deploy it to Deno Deploy in just a few clicks
-        <a href="https://app.deno.com/new?clone=https://github.com/denoland/examples&path=hello-world"><img src="https://deno.com/button" alt="Deploy on Deno"/></a>
-      </p>
-      <ul>
-        <li>
-          <a href="https://docs.deno.com/examples">More examples in the Deno Docs</a>
-        </li>
-        <li>
-          <a href="https://deno.com/deploy">Deno Deploy Early Access</a>
-        </li>
-      </ul>
-    </section>
-    </main>
-    <hr>
-    <footer>
-      <section>
-      <ul class="flex-btwn">
-        <li>
-          <a href="https://deno.com">BlueSky</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Twitter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">YouTube</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Newsletter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Deno</a>
-        </li>
-      </ul>
-      </section>
-    </footer>
+    <!-- Toast Bildiriş Konteyneri -->
+    <div id="toast-container"></div>
+
+    <!-- Təsdiq Modulu -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirmTitle">Təsdiqlə</h3>
+            <p id="confirmMessage"></p>
+            <div class="flex justify-end gap-2 mt-4">
+                <button class="btn btn-outline" onclick="modalCancel()">İmtina</button>
+                <button class="btn" id="confirmActionBtn">Təsdiqlə</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Kod Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <h3 class="mb-4">Tətbiqə giriş linki</h3>
+            <div id="qrcode"></div>
+            <p class="mt-4">Kodu skan edərək tətbiqə daxil olun.</p>
+            <button class="btn btn-outline mt-2" onclick="closeQRModal()">Bağla</button>
+        </div>
+    </div>
+
+    <!-- Sual Əlavə Etmə Modulu (İstifadəçi üçün) -->
+    <div id="addQuestionModal" class="modal">
+        <div class="modal-content">
+            <h3 class="mb-4">Yeni Sual Əlavə Et</h3>
+            <div class="form-group">
+                <label>Fənn</label>
+                <select id="new-question-subject">
+                    <option value="Riyaziyyat">Riyaziyyat</option>
+                    <option value="Fizika">Fizika</option>
+                    <option value="Kimya">Kimya</option>
+                    <option value="Biologiya">Biologiya</option>
+                    <option value="Tarix">Tarix</option>
+                    <option value="Coğrafiya">Coğrafiya</option>
+                    <option value="Ədəbiyyat">Ədəbiyyat</option>
+                    <option value="İngilis dili">İngilis dili</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sual mətni</label>
+                <textarea id="new-question-text" placeholder="Sualı daxil edin..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Variantlar (hər sətirə bir variant)</label>
+                <textarea id="new-question-options" placeholder="Variant A&#10;Variant B&#10;Variant C&#10;Variant D"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Düzgün cavab (A, B, C və ya D)</label>
+                <input type="text" id="new-question-correct" maxlength="1" placeholder="Məsələn: A">
+            </div>
+            <div class="form-group">
+                <label>Çətinlik səviyyəsi</label>
+                <select id="new-question-difficulty">
+                    <option value="easy">Asan</option>
+                    <option value="medium">Orta</option>
+                    <option value="hard">Çətin</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline" onclick="closeAddQuestionModal()">Ləğv et</button>
+                <button class="btn" onclick="saveUserQuestion()">Əlavə et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sual Cavablandırma Modulu -->
+    <div id="answerQuestionModal" class="modal">
+        <div class="modal-content">
+            <h3 id="answer-question-title" class="mb-4">Sual</h3>
+            <p id="answer-question-text" class="mb-4"></p>
+            <div id="answer-options" class="form-group"></div>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline" onclick="closeAnswerModal()">Bağla</button>
+                <button class="btn" onclick="submitAnswer()">Cavabla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test nəticəsi modalı -->
+    <div id="testResultModal" class="modal">
+        <div class="modal-content">
+            <h3 class="mb-4">Test Nəticəsi</h3>
+            <div id="testResultContent"></div>
+            <div class="flex justify-end gap-2 mt-4">
+                <button class="btn" onclick="closeTestResultModal()">Bağla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Əsas Tətbiq Konteyneri -->
+    <div id="app">
+        <!-- Auth Səhifəsi (Giriş/Qeydiyyat) -->
+        <div id="auth-page" class="auth-container glass-container">
+            <div id="login-form" class="form-container">
+                <h2 class="text-center mb-4" style="color:white;">Giriş</h2>
+                <div class="form-group">
+                    <input type="text" id="login-username" placeholder="İstifadəçi adı">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Şifrə">
+                </div>
+                <div class="flex align-center justify-between mb-4" style="color:white;">
+                    <label>
+                        <input type="checkbox" id="remember-me"> Məni xatırla
+                    </label>
+                    <a href="#" onclick="showRegister()" style="color:white;">Hesabınız yoxdur? Qeydiyyat</a>
+                </div>
+                <button class="btn btn-block" onclick="handleLogin()" id="login-btn">Daxil ol</button>
+                <div id="login-error" class="text-center mt-2" style="color: var(--danger);"></div>
+            </div>
+
+            <div id="register-form" class="form-container hidden">
+                <h2 class="text-center mb-4" style="color:white;">Qeydiyyat</h2>
+                <div class="form-group">
+                    <input type="text" id="reg-fullname" placeholder="Ad və Soyad">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="reg-username" placeholder="İstifadəçi adı" oninput="checkUsernameAvailability(this.value)">
+                    <small id="username-status" style="color: var(--success);"></small>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="reg-password" placeholder="Şifrə" oninput="checkPasswordStrength(this.value)">
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strength-bar"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="reg-password2" placeholder="Şifrə təkrar">
+                </div>
+                <button class="btn btn-block" onclick="handleRegister()" id="register-btn">Qeydiyyatdan keç</button>
+                <div class="text-center mt-2">
+                    <a href="#" onclick="showLogin()" style="color:white;">Artıq hesabınız var? Giriş</a>
+                </div>
+                <div id="register-error" class="text-center mt-2" style="color: var(--danger);"></div>
+            </div>
+        </div>
+
+        <!-- İstifadəçi Paneli -->
+        <div id="user-page" class="hidden" style="max-width: 1200px; margin: 20px auto;">
+            <div class="glass-container">
+                <div class="flex justify-between align-center mb-4 flex-wrap gap-2">
+                    <h2 style="color:white;">Xoş gəldiniz, <span id="user-fullname"></span>!</h2>
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline" onclick="showAddQuestionModal()">➕ Sual əlavə et</button>
+                        <button class="btn btn-outline" onclick="logout()">Çıxış</button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex gap-4 mb-4 flex-wrap">
+                    <button class="btn btn-outline" onclick="showUserTab('tests')">📚 Testlər (Fənlər üzrə)</button>
+                    <button class="btn btn-outline" onclick="showUserTab('questions')">❓ İstifadəçi Sualları</button>
+                    <button class="btn btn-outline" onclick="showUserTab('results')">📊 Nəticələrim</button>
+                    <button class="btn btn-outline" onclick="showUserTab('profile')">👤 Profil</button>
+                </div>
+
+                <!-- Testlər bölməsi -->
+                <div id="user-tests-section">
+                    <h3 class="mb-4" style="color:white;">Fənlər üzrə Testlər</h3>
+                    <div class="subject-tabs" id="subject-tabs"></div>
+                    <div id="tests-list" class="questions-grid"></div>
+                </div>
+
+                <!-- İstifadəçi sualları bölməsi -->
+                <div id="user-questions-section" class="hidden">
+                    <h3 class="mb-4" style="color:white;">İstifadəçilərin əlavə etdiyi suallar</h3>
+                    <div id="user-questions-list" class="questions-grid"></div>
+                </div>
+
+                <!-- Nəticələr bölməsi -->
+                <div id="user-results-section" class="hidden">
+                    <h3 class="mb-4" style="color:white;">Test nəticələrim</h3>
+                    <div id="user-results-list" class="questions-grid"></div>
+                </div>
+
+                <!-- Profil bölməsi -->
+                <div id="user-profile-section" class="hidden">
+                    <h3 class="mb-4" style="color:white;">Profil məlumatları</h3>
+                    <div class="glass-container" style="max-width:500px;">
+                        <p><strong>Ad Soyad:</strong> <span id="profile-fullname"></span></p>
+                        <p><strong>İstifadəçi adı:</strong> <span id="profile-username"></span></p>
+                        <p><strong>Qeydiyyat tarixi:</strong> <span id="profile-regdate"></span></p>
+                        <p><strong>Ümumi bal:</strong> <span id="profile-score"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Paneli (Gizli Route) -->
+        <div id="admin-page" class="admin-layout hidden">
+            <aside class="sidebar">
+                <div class="logo">📊 Admin Panel</div>
+                <nav>
+                    <ul>
+                        <li><a href="#" onclick="showAdminSection('users')" class="active" id="nav-users">👥 İstifadəçilər</a></li>
+                        <li><a href="#" onclick="showAdminSection('tests')" id="nav-tests">📝 Testlər (Fənlər)</a></li>
+                        <li><a href="#" onclick="showAdminSection('questions')" id="nav-questions">❓ İstifadəçi Sualları</a></li>
+                        <li><a href="#" onclick="showAdminSection('stats')" id="nav-stats">📈 Statistika</a></li>
+                        <li><a href="#" onclick="showAdminSection('rankings')" id="nav-rankings">🏆 Reytinq</a></li>
+                        <li><a href="#" onclick="logout()">🚪 Çıxış</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <main class="main-content">
+                <!-- İstifadəçi İdarəetmə Bölməsi -->
+                <div id="admin-users-section">
+                    <div class="flex justify-between align-center mb-4 flex-wrap gap-2">
+                        <h2 style="color: white;">İstifadəçi İdarəetmə</h2>
+                        <div class="flex gap-2">
+                            <input type="text" id="user-search" placeholder="Axtar..." oninput="searchUsers(this.value)" style="padding: 8px; border-radius: 8px; border: none;">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Ad Soyad</th>
+                                    <th>İstifadəçi adı</th>
+                                    <th>Qeydiyyat tarixi</th>
+                                    <th>Son giriş</th>
+                                    <th>Status</th>
+                                    <th>Bal</th>
+                                    <th>Əməliyyatlar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Test İdarəetmə Bölməsi (Fənlər) -->
+                <div id="admin-tests-section" class="hidden">
+                    <h2 style="color: white;">Test İdarəetmə (Fənlər üzrə)</h2>
+                    <div class="subject-tabs" id="admin-subject-tabs"></div>
+                    <div id="tests-list-admin" class="questions-grid"></div>
+                </div>
+
+                <!-- İstifadəçi Sualları İdarəetmə -->
+                <div id="admin-questions-section" class="hidden">
+                    <h2 style="color: white;">İstifadəçi Sualları (Təsdiq gözləyənlər)</h2>
+                    <div id="pending-questions-list" class="questions-grid"></div>
+                </div>
+
+                <!-- Statistika Bölməsi -->
+                <div id="admin-stats-section" class="hidden">
+                    <h2 style="color: white;">Statistika</h2>
+                    <div class="stats-grid" id="stats-cards"></div>
+                    <canvas id="statsChart" style="max-height: 300px; background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1rem;"></canvas>
+                </div>
+
+                <!-- Reytinq Bölməsi -->
+                <div id="admin-rankings-section" class="hidden">
+                    <h2 style="color: white;">Reytinq</h2>
+                    <div class="table-responsive">
+                        <table id="rankings-table">
+                            <thead>
+                                <tr><th>Sıra</th><th>İstifadəçi</th><th>Bal</th></tr>
+                            </thead>
+                            <tbody id="rankings-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- QR kod düyməsi -->
+    <div class="qr-button" onclick="showQRModal()">📱</div>
+
+    <!-- Tema Dəyişdirici -->
+    <div class="theme-switch" onclick="toggleTheme()">🌓</div>
+
+    <script>
+        // ==============================
+        // GLOBAL DƏYİŞƏNLƏR VƏ UTILITLAR
+        // ==============================
+        const STORAGE_KEYS = {
+            USERS: 'test_users_v2',
+            TESTS: 'test_tests_v2',
+            USER_QUESTIONS: 'user_questions_v2',
+            CURRENT_USER: 'current_user_v2',
+            LOGIN_ATTEMPTS: 'login_attempts_v2',
+            BLOCK_UNTIL: 'block_until_v2',
+            REMEMBER: 'remember_me_v2',
+            RESULTS: 'test_results_v2'
+        };
+
+        // Admin məlumatları (hardcoded) - yeni şifrə: 123456789Araz
+        const ADMIN = {
+            username: 'Araz',
+            password: '123456789Araz'
+        };
+
+        // Fənlər siyahısı
+        const SUBJECTS = ['Riyaziyyat', 'Fizika', 'Kimya', 'Biologiya', 'Tarix', 'Coğrafiya', 'Ədəbiyyat', 'İngilis dili'];
+
+        // Sadə hash funksiyası (simulyasiya)
+        function simpleHash(str) {
+            return btoa(str);
+        }
+
+        // Toast bildiriş
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // Modal təsdiq sistemi
+        let modalResolve = null;
+        function showConfirm(title, message) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmModal').classList.add('show');
+            return new Promise((resolve) => {
+                modalResolve = resolve;
+            });
+        }
+        window.modalCancel = function() {
+            document.getElementById('confirmModal').classList.remove('show');
+            if (modalResolve) modalResolve(false);
+        };
+        document.getElementById('confirmActionBtn').onclick = () => {
+            document.getElementById('confirmModal').classList.remove('show');
+            if (modalResolve) modalResolve(true);
+        };
+
+        // QR kod modalı
+        window.showQRModal = function() {
+            document.getElementById('qrModal').classList.add('show');
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById('qrcode'), {
+                text: window.location.href,
+                width: 200,
+                height: 200
+            });
+        };
+        window.closeQRModal = function() {
+            document.getElementById('qrModal').classList.remove('show');
+        };
+
+        // Tema dəyişdirici
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // ==============================
+        // AUTH SİSTEMİ
+        // ==============================
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+        }
+
+        window.checkUsernameAvailability = function(username) {
+            const users = getUsers();
+            const statusEl = document.getElementById('username-status');
+            if (username.length < 3) {
+                statusEl.textContent = 'Ən az 3 simvol';
+                statusEl.style.color = 'var(--warning)';
+                return false;
+            }
+            const exists = users.some(u => u.username === username);
+            if (exists) {
+                statusEl.textContent = 'Bu istifadəçi adı artıq mövcuddur';
+                statusEl.style.color = 'var(--danger)';
+                return false;
+            } else {
+                statusEl.textContent = 'Mövcuddur';
+                statusEl.style.color = 'var(--success)';
+                return true;
+            }
+        };
+
+        window.checkPasswordStrength = function(password) {
+            const bar = document.getElementById('strength-bar');
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            bar.className = 'strength-bar';
+            if (strength <= 2) bar.classList.add('weak');
+            else if (strength <= 4) bar.classList.add('medium');
+            else bar.classList.add('strong');
+        };
+
+        window.handleRegister = async function() {
+            const fullname = document.getElementById('reg-fullname').value.trim();
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const password2 = document.getElementById('reg-password2').value;
+
+            if (!fullname || !username || !password) {
+                showToast('Bütün sahələri doldurun', 'error');
+                return;
+            }
+            if (password !== password2) {
+                showToast('Şifrələr uyğun gəlmir', 'error');
+                return;
+            }
+            if (password.length < 8) {
+                showToast('Şifrə ən az 8 simvol olmalıdır', 'error');
+                return;
+            }
+            if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+                showToast('Şifrədə böyük, kiçik hərf və rəqəm olmalıdır', 'error');
+                return;
+            }
+            if (!checkUsernameAvailability(username)) return;
+
+            const btn = document.getElementById('register-btn');
+            btn.innerHTML = '<span class="loading"></span> Qeydiyyat...';
+            btn.disabled = true;
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            const users = getUsers();
+            const newUser = {
+                fullname,
+                username,
+                password: simpleHash(password),
+                registeredAt: new Date().toISOString(),
+                lastLogin: null,
+                blocked: false,
+                role: 'user',
+                score: 0
+            };
+            users.push(newUser);
+            saveUsers(users);
+
+            localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(newUser));
+            showToast('Qeydiyyat uğurlu!', 'success');
+            checkAuth();
+
+            btn.innerHTML = 'Qeydiyyatdan keç';
+            btn.disabled = false;
+        };
+
+        window.handleLogin = async function() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('remember-me').checked;
+
+            const blockUntil = localStorage.getItem(STORAGE_KEYS.BLOCK_UNTIL);
+            if (blockUntil && Date.now() < parseInt(blockUntil)) {
+                const remaining = Math.ceil((parseInt(blockUntil) - Date.now()) / 1000);
+                showToast(`Çox cəhd etdiniz. ${remaining} saniyə gözləyin.`, 'warning');
+                return;
+            }
+
+            // Admin yoxlanışı
+            if (username === ADMIN.username && password === ADMIN.password) {
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ username: ADMIN.username, role: 'admin' }));
+                if (remember) localStorage.setItem(STORAGE_KEYS.REMEMBER, 'true');
+                showToast('Admin girişi uğurlu', 'success');
+                checkAuth();
+                return;
+            }
+
+            const users = getUsers();
+            const user = users.find(u => u.username === username && u.password === simpleHash(password));
+
+            if (user) {
+                if (user.blocked) {
+                    showToast('Hesabınız bloklanıb', 'error');
+                    return;
+                }
+                user.lastLogin = new Date().toISOString();
+                saveUsers(users);
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+                localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+                localStorage.removeItem(STORAGE_KEYS.BLOCK_UNTIL);
+                if (remember) localStorage.setItem(STORAGE_KEYS.REMEMBER, 'true');
+                showToast('Giriş uğurlu', 'success');
+                checkAuth();
+            } else {
+                let attempts = parseInt(localStorage.getItem(STORAGE_KEYS.LOGIN_ATTEMPTS) || '0');
+                attempts++;
+                localStorage.setItem(STORAGE_KEYS.LOGIN_ATTEMPTS, attempts);
+
+                if (attempts >= 3) {
+                    const blockTime = Date.now() + 30000;
+                    localStorage.setItem(STORAGE_KEYS.BLOCK_UNTIL, blockTime);
+                    showToast('3 uğursuz cəhd. 30 saniyə bloklandınız.', 'warning');
+                } else {
+                    showToast(`Yanlış məlumat. Qalan cəhd: ${3-attempts}`, 'error');
+                }
+            }
+        };
+
+        window.logout = function() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            localStorage.removeItem(STORAGE_KEYS.REMEMBER);
+            checkAuth();
+            showToast('Çıxış edildi', 'info');
+        };
+
+        function checkAuth() {
+            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            const hash = window.location.hash;
+
+            if (currentUser) {
+                if (currentUser.role === 'admin') {
+                    if (hash === '#super-admin-panel-az-2026') {
+                        showAdminPanel();
+                    } else {
+                        window.location.hash = 'super-admin-panel-az-2026';
+                    }
+                } else {
+                    document.getElementById('auth-page').classList.add('hidden');
+                    document.getElementById('user-page').classList.remove('hidden');
+                    document.getElementById('admin-page').classList.add('hidden');
+                    document.getElementById('user-fullname').textContent = currentUser.fullname || currentUser.username;
+                    showUserTab('tests');
+                    updateProfileInfo();
+                }
+            } else {
+                document.getElementById('auth-page').classList.remove('hidden');
+                document.getElementById('user-page').classList.add('hidden');
+                document.getElementById('admin-page').classList.add('hidden');
+                showLogin();
+            }
+        }
+
+        function updateProfileInfo() {
+            const user = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            if (user) {
+                document.getElementById('profile-fullname').textContent = user.fullname || '-';
+                document.getElementById('profile-username').textContent = user.username;
+                document.getElementById('profile-regdate').textContent = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('az') : '-';
+                document.getElementById('profile-score').textContent = user.score || 0;
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('auth-page').classList.add('hidden');
+            document.getElementById('user-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.remove('hidden');
+            loadUsersTable();
+            loadStats();
+            renderAdminSubjectTabs();
+        }
+
+        // ==============================
+        // FƏNLƏR VƏ TESTLƏR (Nümunə suallar)
+        // ==============================
+        function getTests() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.TESTS)) || [];
+        }
+
+        function saveTests(tests) {
+            localStorage.setItem(STORAGE_KEYS.TESTS, JSON.stringify(tests));
+        }
+
+        // Hər fənn üçün 50 suallı test yarat (daha real suallar)
+        function initSubjectTests() {
+            let tests = getTests();
+            if (tests.length === 0) {
+                SUBJECTS.forEach(subject => {
+                    const questions = [];
+                    for (let i = 1; i <= 50; i++) {
+                        let questionText, options, correct;
+                        // Nümunə suallar - fənnə görə dəyişir
+                        if (subject === 'Riyaziyyat') {
+                            questionText = `${i}. 2 + 2 = ?`;
+                            options = ['3', '4', '5', '6'];
+                            correct = 'B';
+                        } else if (subject === 'Fizika') {
+                            questionText = `${i}. Hansı əsas vahiddir?`;
+                            options = ['Newton', 'Joule', 'Metr', 'Watt'];
+                            correct = 'C';
+                        } else {
+                            questionText = `${subject} fənnindən nümunə sual ${i}`;
+                            options = ['Cavab A', 'Cavab B', 'Cavab C', 'Cavab D'];
+                            correct = String.fromCharCode(65 + (i % 4));
+                        }
+                        questions.push({
+                            id: `${subject}_${i}`,
+                            question: questionText,
+                            options: options,
+                            correct: correct,
+                            difficulty: i % 3 === 0 ? 'hard' : (i % 3 === 1 ? 'easy' : 'medium')
+                        });
+                    }
+                    tests.push({
+                        id: `test_${subject}`,
+                        name: subject,
+                        subject: subject,
+                        questions: questions
+                    });
+                });
+                saveTests(tests);
+            }
+        }
+
+        // İstifadəçi sualları
+        function getUserQuestions() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_QUESTIONS)) || [];
+        }
+
+        // Test nəticələri
+        function getUserResults() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.RESULTS)) || [];
+        }
+
+        function saveUserResults(results) {
+            localStorage.setItem(STORAGE_KEYS.RESULTS, JSON.stringify(results));
+        }
+
+        // ==============================
+        // İSTİFADƏÇİ PANELİ
+        // ==============================
+        window.showUserTab = function(tab) {
+            document.getElementById('user-tests-section').classList.add('hidden');
+            document.getElementById('user-questions-section').classList.add('hidden');
+            document.getElementById('user-results-section').classList.add('hidden');
+            document.getElementById('user-profile-section').classList.add('hidden');
+
+            if (tab === 'tests') {
+                document.getElementById('user-tests-section').classList.remove('hidden');
+                renderSubjectTabs();
+                showSubjectTests(SUBJECTS[0]);
+            } else if (tab === 'questions') {
+                document.getElementById('user-questions-section').classList.remove('hidden');
+                loadUserQuestions();
+            } else if (tab === 'results') {
+                document.getElementById('user-results-section').classList.remove('hidden');
+                loadUserResults();
+            } else if (tab === 'profile') {
+                document.getElementById('user-profile-section').classList.remove('hidden');
+                updateProfileInfo();
+            }
+        };
+
+        function renderSubjectTabs() {
+            const container = document.getElementById('subject-tabs');
+            container.innerHTML = '';
+            SUBJECTS.forEach(subject => {
+                const tab = document.createElement('span');
+                tab.className = 'subject-tab';
+                tab.textContent = subject;
+                tab.onclick = () => {
+                    document.querySelectorAll('.subject-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    showSubjectTests(subject);
+                };
+                container.appendChild(tab);
+            });
+            if (SUBJECTS.length > 0) {
+                container.firstChild.classList.add('active');
+            }
+        }
+
+        function showSubjectTests(subject) {
+            const tests = getTests();
+            const test = tests.find(t => t.subject === subject);
+            const container = document.getElementById('tests-list');
+            if (!test) {
+                container.innerHTML = '<p style="color:white;">Bu fənn üçün test mövcud deyil.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <div class="question-card">
+                    <h4>${test.name} testi</h4>
+                    <p>${test.questions.length} sual</p>
+                    <button class="btn btn-sm" onclick="startTest('${test.id}')">Testə başla</button>
+                </div>
+            `;
+        }
+
+        // Test həll etmə dəyişənləri
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let testStartTime = null;
+
+        window.startTest = function(testId) {
+            const tests = getTests();
+            currentTest = tests.find(t => t.id === testId);
+            if (!currentTest) return;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentTest.questions.length).fill(null);
+            testStartTime = Date.now();
+            showTestModal();
+        };
+
+        function showTestModal() {
+            // Test modalını yarat və göstər
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.id = 'testModal';
+            const question = currentTest.questions[currentQuestionIndex];
+            const progress = `${currentQuestionIndex+1} / ${currentTest.questions.length}`;
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width:800px;">
+                    <div class="test-header">
+                        <h3>${currentTest.name} - Sual ${progress}</h3>
+                        <span id="test-timer">00:00</span>
+                    </div>
+                    <div class="question-container">
+                        <p><strong>${question.question}</strong></p>
+                        <div class="options-list" id="test-options">
+                            ${question.options.map((opt, idx) => `
+                                <div class="option-item ${userAnswers[currentQuestionIndex] === String.fromCharCode(65+idx) ? 'selected' : ''}" data-value="${String.fromCharCode(65+idx)}">
+                                    <span>${String.fromCharCode(65+idx)}.</span> ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="test-navigation">
+                        <button class="btn btn-outline" onclick="previousQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>← Əvvəlki</button>
+                        <span style="color:white;">Sual ${progress}</span>
+                        <button class="btn btn-outline" onclick="nextQuestion()">${currentQuestionIndex === currentTest.questions.length-1 ? 'Bitir' : 'Növbəti →'}</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Timer başlat
+            startTimer();
+
+            // Option click hadisələri
+            modal.querySelectorAll('.option-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    userAnswers[currentQuestionIndex] = value;
+                    // Seçilmiş class-ı yenilə
+                    modal.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Əvvəlki, növbəti funksiyalarını window-a əlavə et (modal içində istifadə üçün)
+            window.previousQuestion = function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateTestModal();
+                }
+            };
+            window.nextQuestion = function() {
+                if (currentQuestionIndex < currentTest.questions.length - 1) {
+                    currentQuestionIndex++;
+                    updateTestModal();
+                } else {
+                    finishTest();
+                }
+            };
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('test-timer');
+            const interval = setInterval(() => {
+                if (!document.getElementById('testModal')) {
+                    clearInterval(interval);
+                    return;
+                }
+                const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function updateTestModal() {
+            const modal = document.getElementById('testModal');
+            if (!modal) return;
+            const question = currentTest.questions[currentQuestionIndex];
+            const progress = `${currentQuestionIndex+1} / ${currentTest.questions.length}`;
+            modal.querySelector('.test-header h3').innerHTML = `${currentTest.name} - Sual ${progress}`;
+            modal.querySelector('.question-container p').innerHTML = `<strong>${question.question}</strong>`;
+            const optionsHtml = question.options.map((opt, idx) => `
+                <div class="option-item ${userAnswers[currentQuestionIndex] === String.fromCharCode(65+idx) ? 'selected' : ''}" data-value="${String.fromCharCode(65+idx)}">
+                    <span>${String.fromCharCode(65+idx)}.</span> ${opt}
+                </div>
+            `).join('');
+            modal.querySelector('.options-list').innerHTML = optionsHtml;
+            modal.querySelector('.test-navigation span').textContent = `Sual ${progress}`;
+            modal.querySelector('.test-navigation button:first-child').disabled = currentQuestionIndex === 0;
+            modal.querySelector('.test-navigation button:last-child').textContent = currentQuestionIndex === currentTest.questions.length-1 ? 'Bitir' : 'Növbəti →';
+
+            // Yenidən event listener əlavə et
+            modal.querySelectorAll('.option-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    userAnswers[currentQuestionIndex] = value;
+                    modal.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        function finishTest() {
+            // Cavabları hesabla
+            let correctCount = 0;
+            currentTest.questions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) correctCount++;
+            });
+            const score = Math.round((correctCount / currentTest.questions.length) * 100);
+            const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+
+            // Nəticəni yadda saxla
+            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            const results = getUserResults();
+            results.push({
+                username: currentUser.username,
+                testName: currentTest.name,
+                score: score,
+                correct: correctCount,
+                total: currentTest.questions.length,
+                date: new Date().toISOString(),
+                timeSpent: elapsed
+            });
+            saveUserResults(results);
+
+            // İstifadəçinin balını artır
+            const users = getUsers();
+            const user = users.find(u => u.username === currentUser.username);
+            if (user) {
+                user.score = (user.score || 0) + score;
+                saveUsers(users);
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+            }
+
+            // Modalı bağla və nəticəni göstər
+            document.getElementById('testModal').remove();
+            showTestResult(score, correctCount, currentTest.questions.length, elapsed);
+        }
+
+        function showTestResult(score, correct, total, time) {
+            const modal = document.getElementById('testResultModal');
+            const content = document.getElementById('testResultContent');
+            content.innerHTML = `
+                <div class="result-card">
+                    <div class="result-score">${score}%</div>
+                    <p>Düzgün cavablar: ${correct} / ${total}</p>
+                    <p>Vaxt: ${Math.floor(time/60)} dəqiqə ${time%60} saniyə</p>
+                </div>
+            `;
+            modal.classList.add('show');
+        }
+
+        window.closeTestResultModal = function() {
+            document.getElementById('testResultModal').classList.remove('show');
+        };
+
+        // İstifadəçi suallarını yüklə
+        function loadUserQuestions() {
+            const questions = getUserQuestions().filter(q => q.approved);
+            const container = document.getElementById('user-questions-list');
+            container.innerHTML = '';
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color:white;">Hələ heç bir sual yoxdur.</p>';
+                return;
+            }
+            questions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <p><strong>${q.question}</strong></p>
+                    <p>${q.options.join(' | ')}</p>
+                    <div class="question-meta">
+                        <span class="difficulty ${q.difficulty}">${q.difficulty}</span>
+                        <span>Fənn: ${q.subject}</span>
+                        <span>Əlavə edən: ${q.author}</span>
+                    </div>
+                    <button class="btn btn-sm mt-2" onclick="answerUserQuestion('${q.id}')">Cavabla</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Nəticələri yüklə
+        function loadUserResults() {
+            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            const results = getUserResults().filter(r => r.username === currentUser.username);
+            const container = document.getElementById('user-results-list');
+            container.innerHTML = '';
+            if (results.length === 0) {
+                container.innerHTML = '<p style="color:white;">Hələ heç bir test həll etməmisiniz.</p>';
+                return;
+            }
+            results.slice().reverse().forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <h4>${r.testName}</h4>
+                    <p>Bal: ${r.score}% (${r.correct}/${r.total})</p>
+                    <p>${new Date(r.date).toLocaleString('az')}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // ==============================
+        // SUAL ƏLAVƏ ETMƏ (İSTİFADƏÇİ)
+        // ==============================
+        window.showAddQuestionModal = function() {
+            document.getElementById('addQuestionModal').classList.add('show');
+        };
+
+        window.closeAddQuestionModal = function() {
+            document.getElementById('addQuestionModal').classList.remove('show');
+        };
+
+        window.saveUserQuestion = function() {
+            const subject = document.getElementById('new-question-subject').value;
+            const text = document.getElementById('new-question-text').value.trim();
+            const optionsText = document.getElementById('new-question-options').value.trim();
+            const correct = document.getElementById('new-question-correct').value.trim().toUpperCase();
+            const difficulty = document.getElementById('new-question-difficulty').value;
+
+            if (!text || !optionsText || !correct) {
+                showToast('Bütün sahələri doldurun', 'error');
+                return;
+            }
+
+            const options = optionsText.split('\n').map(s => s.trim()).filter(s => s);
+            if (options.length < 2) {
+                showToast('Ən az 2 variant daxil edin', 'error');
+                return;
+            }
+
+            if (!['A','B','C','D'].includes(correct)) {
+                showToast('Düzgün cavab A, B, C və ya D olmalıdır', 'error');
+                return;
+            }
+
+            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            const questions = getUserQuestions();
+            const newQuestion = {
+                id: Date.now().toString(),
+                subject: subject,
+                question: text,
+                options: options,
+                correct: correct,
+                difficulty: difficulty,
+                author: currentUser.username,
+                authorFullname: currentUser.fullname,
+                date: new Date().toISOString(),
+                approved: false,
+                stats: { attempts: 0, correct: 0 }
+            };
+            questions.push(newQuestion);
+            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+
+            showToast('Sualınız admin təsdiqinə göndərildi', 'success');
+            closeAddQuestionModal();
+        };
+
+        // ==============================
+        // SUAL CAVABLAMA (İstifadəçi sualı)
+        // ==============================
+        let currentAnswerQuestionId = null;
+
+        window.answerUserQuestion = function(questionId) {
+            const questions = getUserQuestions().filter(q => q.approved);
+            const q = questions.find(q => q.id === questionId);
+            if (!q) return;
+
+            currentAnswerQuestionId = questionId;
+            document.getElementById('answer-question-title').textContent = `Sual (${q.subject})`;
+            document.getElementById('answer-question-text').textContent = q.question;
+
+            const optionsHtml = q.options.map((opt, idx) => `
+                <div>
+                    <label>
+                        <input type="radio" name="answer" value="${String.fromCharCode(65 + idx)}">
+                        ${opt}
+                    </label>
+                </div>
+            `).join('');
+            document.getElementById('answer-options').innerHTML = optionsHtml;
+
+            document.getElementById('answerQuestionModal').classList.add('show');
+        };
+
+        window.submitAnswer = function() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) {
+                showToast('Cavab seçin', 'warning');
+                return;
+            }
+
+            const questions = getUserQuestions();
+            const q = questions.find(q => q.id === currentAnswerQuestionId);
+            if (!q) return;
+
+            const isCorrect = selected.value === q.correct;
+            q.stats.attempts++;
+            if (isCorrect) q.stats.correct++;
+            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+
+            if (isCorrect) {
+                const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+                const users = getUsers();
+                const user = users.find(u => u.username === currentUser.username);
+                if (user) {
+                    user.score = (user.score || 0) + 5;
+                    saveUsers(users);
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+                }
+                showToast('Düzgün cavab! +5 bal', 'success');
+            } else {
+                showToast(`Səhv cavab. Düzgün cavab: ${q.correct}`, 'error');
+            }
+
+            closeAnswerModal();
+        };
+
+        window.closeAnswerModal = function() {
+            document.getElementById('answerQuestionModal').classList.remove('show');
+        };
+
+        // ==============================
+        // ADMIN PANEL FUNKSİYALARI
+        // ==============================
+        window.showAdminSection = function(section) {
+            document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById(`nav-${section}`).classList.add('active');
+
+            document.getElementById('admin-users-section').classList.add('hidden');
+            document.getElementById('admin-tests-section').classList.add('hidden');
+            document.getElementById('admin-questions-section').classList.add('hidden');
+            document.getElementById('admin-stats-section').classList.add('hidden');
+            document.getElementById('admin-rankings-section').classList.add('hidden');
+
+            if (section === 'users') {
+                document.getElementById('admin-users-section').classList.remove('hidden');
+                loadUsersTable();
+            } else if (section === 'tests') {
+                document.getElementById('admin-tests-section').classList.remove('hidden');
+                renderAdminSubjectTabs();
+                showAdminSubjectTests(SUBJECTS[0]);
+            } else if (section === 'questions') {
+                document.getElementById('admin-questions-section').classList.remove('hidden');
+                loadPendingQuestions();
+            } else if (section === 'stats') {
+                document.getElementById('admin-stats-section').classList.remove('hidden');
+                loadStats();
+                renderStatsChart();
+            } else if (section === 'rankings') {
+                document.getElementById('admin-rankings-section').classList.remove('hidden');
+                loadRankings();
+            }
+        };
+
+        function renderAdminSubjectTabs() {
+            const container = document.getElementById('admin-subject-tabs');
+            if (!container) return;
+            container.innerHTML = '';
+            SUBJECTS.forEach(subject => {
+                const tab = document.createElement('span');
+                tab.className = 'subject-tab';
+                tab.textContent = subject;
+                tab.onclick = () => {
+                    document.querySelectorAll('#admin-subject-tabs .subject-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    showAdminSubjectTests(subject);
+                };
+                container.appendChild(tab);
+            });
+            if (SUBJECTS.length > 0) {
+                container.firstChild.classList.add('active');
+            }
+        }
+
+        function showAdminSubjectTests(subject) {
+            const tests = getTests();
+            const test = tests.find(t => t.subject === subject);
+            const container = document.getElementById('tests-list-admin');
+            if (!test) {
+                container.innerHTML = '<p style="color:white;">Test mövcud deyil.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <div class="question-card">
+                    <h4>${test.name}</h4>
+                    <p>${test.questions.length} sual</p>
+                    <div class="flex gap-2 mt-2 flex-wrap">
+                        <button class="btn btn-sm" onclick="editTest('${test.id}')">Redaktə</button>
+                        <button class="btn btn-sm btn-outline" onclick="deleteTest('${test.id}')">Sil</button>
+                        <button class="btn btn-sm btn-outline" onclick="exportTest('${test.id}')">JSON ixrac</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.editTest = function(testId) {
+            // Sadə redaktə: sualları JSON formatında göstər
+            const tests = getTests();
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+            const newQuestions = prompt('Sualları JSON formatında daxil edin:', JSON.stringify(test.questions, null, 2));
+            if (newQuestions) {
+                try {
+                    test.questions = JSON.parse(newQuestions);
+                    saveTests(tests);
+                    showToast('Test yeniləndi', 'success');
+                } catch (e) {
+                    showToast('Yanlış JSON formatı', 'error');
+                }
+            }
+        };
+
+        window.deleteTest = async function(testId) {
+            const confirmed = await showConfirm('Sil', 'Testi silmək istədiyinizə əminsiniz?');
+            if (!confirmed) return;
+            let tests = getTests();
+            tests = tests.filter(t => t.id !== testId);
+            saveTests(tests);
+            showAdminSubjectTests(SUBJECTS[0]);
+            showToast('Test silindi', 'success');
+        };
+
+        window.exportTest = function(testId) {
+            const tests = getTests();
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+            const dataStr = JSON.stringify(test, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${test.name}.json`;
+            a.click();
+        };
+
+        function loadUsersTable(filter = '') {
+            const users = getUsers();
+            const tbody = document.getElementById('users-tbody');
+            tbody.innerHTML = '';
+
+            users.filter(u => u.fullname?.includes(filter) || u.username.includes(filter)).forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${user.fullname || '-'}</td>
+                    <td>${user.username}</td>
+                    <td>${user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('az') : '-'}</td>
+                    <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('az') : 'Heç vaxt'}</td>
+                    <td><span class="badge ${user.blocked ? 'blocked' : 'active'}">${user.blocked ? 'Bloklanıb' : 'Aktiv'}</span></td>
+                    <td>${user.score || 0}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline" onclick="toggleBlockUser('${user.username}')">${user.blocked ? 'Aktivləşdir' : 'Blokla'}</button>
+                        <button class="btn btn-sm btn-outline" onclick="deleteUser('${user.username}')">Sil</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.searchUsers = function(query) {
+            loadUsersTable(query);
+        };
+
+        window.toggleBlockUser = async function(username) {
+            if (username === ADMIN.username) {
+                showToast('Admin bloklana bilməz', 'error');
+                return;
+            }
+            const confirmed = await showConfirm('Bloklama', 'Statusu dəyişmək istədiyinizə əminsiniz?');
+            if (!confirmed) return;
+            const users = getUsers();
+            const user = users.find(u => u.username === username);
+            if (user) {
+                user.blocked = !user.blocked;
+                saveUsers(users);
+                loadUsersTable();
+                showToast('Status dəyişdirildi', 'success');
+            }
+        };
+
+        window.deleteUser = async function(username) {
+            if (username === ADMIN.username) {
+                showToast('Admin silinə bilməz', 'error');
+                return;
+            }
+            const confirmed = await showConfirm('Sil', 'İstifadəçini silmək istədiyinizə əminsiniz?');
+            if (!confirmed) return;
+            let users = getUsers();
+            users = users.filter(u => u.username !== username);
+            saveUsers(users);
+            loadUsersTable();
+            showToast('İstifadəçi silindi', 'success');
+        };
+
+        // Təsdiq gözləyən suallar
+        function loadPendingQuestions() {
+            const questions = getUserQuestions().filter(q => !q.approved);
+            const container = document.getElementById('pending-questions-list');
+            container.innerHTML = '';
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color:white;">Təsdiq gözləyən sual yoxdur.</p>';
+                return;
+            }
+            questions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <p><strong>${q.question}</strong></p>
+                    <p>${q.options.join(' | ')}</p>
+                    <p>Düzgün cavab: ${q.correct}</p>
+                    <div class="question-meta">
+                        <span class="difficulty ${q.difficulty}">${q.difficulty}</span>
+                        <span>Fənn: ${q.subject}</span>
+                        <span>Əlavə edən: ${q.author}</span>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <button class="btn btn-sm" onclick="approveQuestion('${q.id}')">Təsdiq et</button>
+                        <button class="btn btn-sm btn-outline" onclick="rejectQuestion('${q.id}')">Rədd et</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.approveQuestion = function(questionId) {
+            const questions = getUserQuestions();
+            const q = questions.find(q => q.id === questionId);
+            if (q) {
+                q.approved = true;
+                localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+                loadPendingQuestions();
+                showToast('Sual təsdiqləndi', 'success');
+            }
+        };
+
+        window.rejectQuestion = function(questionId) {
+            let questions = getUserQuestions();
+            questions = questions.filter(q => q.id !== questionId);
+            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+            loadPendingQuestions();
+            showToast('Sual rədd edildi', 'info');
+        };
+
+        function loadStats() {
+            const users = getUsers();
+            const activeUsers = users.filter(u => !u.blocked).length;
+            const tests = getTests();
+            const questions = getUserQuestions();
+            const pendingQuestions = questions.filter(q => !q.approved).length;
+            const results = getUserResults();
+
+            document.getElementById('stats-cards').innerHTML = `
+                <div class="stat-card">Ümumi istifadəçi: ${users.length}</div>
+                <div class="stat-card">Aktiv istifadəçi: ${activeUsers}</div>
+                <div class="stat-card">Ümumi fənn testi: ${tests.length}</div>
+                <div class="stat-card">Gözləyən sual: ${pendingQuestions}</div>
+                <div class="stat-card">Həll olunan test: ${results.length}</div>
+            `;
+        }
+
+        function renderStatsChart() {
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            const results = getUserResults();
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                last7Days.push(d.toLocaleDateString('az'));
+            }
+            const counts = last7Days.map(date => {
+                return results.filter(r => new Date(r.date).toLocaleDateString('az') === date).length;
+            });
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        label: 'Son 7 gündə həll olunan testlər',
+                        data: counts,
+                        borderColor: 'rgb(99, 102, 241)',
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: 'white' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'white' } },
+                        y: { ticks: { color: 'white' } }
+                    }
+                }
+            });
+        }
+
+        function loadRankings() {
+            const users = getUsers().filter(u => !u.blocked).sort((a, b) => (b.score || 0) - (a.score || 0));
+            const tbody = document.getElementById('rankings-tbody');
+            tbody.innerHTML = '';
+            users.slice(0, 10).forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${index+1}</td><td>${user.fullname || user.username}</td><td>${user.score || 0}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ==============================
+        // ROUTER VƏ İNİT
+        // ==============================
+        window.addEventListener('hashchange', checkAuth);
+        window.addEventListener('load', () => {
+            // Nümunə məlumatlar
+            if (getUsers().length === 0) {
+                saveUsers([
+                    { fullname: 'Test İstifadəçi', username: 'test', password: simpleHash('Test1234'), registeredAt: new Date().toISOString(), lastLogin: null, blocked: false, role: 'user', score: 150 }
+                ]);
+            }
+
+            // Fənlər üzrə testləri yarat
+            initSubjectTests();
+
+            if (!localStorage.getItem(STORAGE_KEYS.USER_QUESTIONS)) {
+                localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify([]));
+            }
+            if (!localStorage.getItem(STORAGE_KEYS.RESULTS)) {
+                localStorage.setItem(STORAGE_KEYS.RESULTS, JSON.stringify([]));
+            }
+
+            if (localStorage.getItem(STORAGE_KEYS.REMEMBER)) {
+                // remember varsa, session davam edir
+            }
+            checkAuth();
+        });
+
+        window.showLogin = function() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+        };
+        window.showRegister = function() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        };
+
+        // DevTools aşkarlama
+        (function() {
+            const element = new Image();
+            Object.defineProperty(element, 'id', { get: function() { 
+                showToast('DevTools aşkarlandı!', 'warning');
+            }});
+            console.log('%c', element);
+        })();
+    </script>
 </body>
 </html>
