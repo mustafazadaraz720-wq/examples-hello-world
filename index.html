@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Professional Test Sistemi | Tam Təkmilləşdirilmiş</title>
+    <title>Professional Test Sistemi | 1-11 Sinif + Çətinlik Səviyyələri</title>
     <!-- QR Code generator library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ==============================
+           GLOBAL DƏYİŞƏNLƏR VƏ RESET
+        ============================== */
         * {
             margin: 0;
             padding: 0;
@@ -453,25 +456,22 @@
             transform: scale(1.1);
         }
 
-        .subject-tabs {
+        .filter-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: flex-end;
         }
 
-        .subject-tab {
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
+        .filter-item {
+            flex: 1 1 200px;
+        }
+
+        .filter-item label {
             color: white;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .subject-tab:hover,
-        .subject-tab.active {
-            background: var(--primary);
+            display: block;
+            margin-bottom: 0.3rem;
         }
 
         /* Test həll etmə üçün əlavə stillər */
@@ -596,6 +596,30 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>Sinif</label>
+                <select id="new-question-grade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Çətinlik səviyyəsi</label>
+                <select id="new-question-difficulty">
+                    <option value="easy">Asan</option>
+                    <option value="medium">Orta</option>
+                    <option value="hard">Çətin</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Sual mətni</label>
                 <textarea id="new-question-text" placeholder="Sualı daxil edin..."></textarea>
             </div>
@@ -607,14 +631,6 @@
                 <label>Düzgün cavab (A, B, C və ya D)</label>
                 <input type="text" id="new-question-correct" maxlength="1" placeholder="Məsələn: A">
             </div>
-            <div class="form-group">
-                <label>Çətinlik səviyyəsi</label>
-                <select id="new-question-difficulty">
-                    <option value="easy">Asan</option>
-                    <option value="medium">Orta</option>
-                    <option value="hard">Çətin</option>
-                </select>
-            </div>
             <div class="flex justify-end gap-2">
                 <button class="btn btn-outline" onclick="closeAddQuestionModal()">Ləğv et</button>
                 <button class="btn" onclick="saveUserQuestion()">Əlavə et</button>
@@ -622,15 +638,142 @@
         </div>
     </div>
 
-    <!-- Sual Cavablandırma Modulu -->
-    <div id="answerQuestionModal" class="modal">
+    <!-- Admin tərəfindən sual əlavə etmə modulu (birbaşa təsdiqlənir) -->
+    <div id="adminAddQuestionModal" class="modal">
         <div class="modal-content">
-            <h3 id="answer-question-title" class="mb-4">Sual</h3>
-            <p id="answer-question-text" class="mb-4"></p>
-            <div id="answer-options" class="form-group"></div>
+            <h3 class="mb-4">Admin: Yeni Sual Əlavə Et</h3>
+            <div class="form-group">
+                <label>Fənn</label>
+                <select id="admin-new-question-subject">
+                    <option value="Riyaziyyat">Riyaziyyat</option>
+                    <option value="Fizika">Fizika</option>
+                    <option value="Kimya">Kimya</option>
+                    <option value="Biologiya">Biologiya</option>
+                    <option value="Tarix">Tarix</option>
+                    <option value="Coğrafiya">Coğrafiya</option>
+                    <option value="Ədəbiyyat">Ədəbiyyat</option>
+                    <option value="İngilis dili">İngilis dili</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sinif</label>
+                <select id="admin-new-question-grade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Çətinlik səviyyəsi</label>
+                <select id="admin-new-question-difficulty">
+                    <option value="easy">Asan</option>
+                    <option value="medium">Orta</option>
+                    <option value="hard">Çətin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sual mətni</label>
+                <textarea id="admin-new-question-text" placeholder="Sualı daxil edin..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Variantlar (hər sətirə bir variant)</label>
+                <textarea id="admin-new-question-options" placeholder="Variant A&#10;Variant B&#10;Variant C&#10;Variant D"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Düzgün cavab (A, B, C və ya D)</label>
+                <input type="text" id="admin-new-question-correct" maxlength="1" placeholder="Məsələn: A">
+            </div>
             <div class="flex justify-end gap-2">
-                <button class="btn btn-outline" onclick="closeAnswerModal()">Bağla</button>
-                <button class="btn" onclick="submitAnswer()">Cavabla</button>
+                <button class="btn btn-outline" onclick="closeAdminAddQuestionModal()">Ləğv et</button>
+                <button class="btn" onclick="saveAdminQuestion()">Əlavə et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sual redaktə modulu (admin üçün) -->
+    <div id="editQuestionModal" class="modal">
+        <div class="modal-content">
+            <h3 class="mb-4">Sualı Redaktə Et</h3>
+            <input type="hidden" id="edit-question-id">
+            <div class="form-group">
+                <label>Fənn</label>
+                <select id="edit-question-subject">
+                    <option value="Riyaziyyat">Riyaziyyat</option>
+                    <option value="Fizika">Fizika</option>
+                    <option value="Kimya">Kimya</option>
+                    <option value="Biologiya">Biologiya</option>
+                    <option value="Tarix">Tarix</option>
+                    <option value="Coğrafiya">Coğrafiya</option>
+                    <option value="Ədəbiyyat">Ədəbiyyat</option>
+                    <option value="İngilis dili">İngilis dili</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sinif</label>
+                <select id="edit-question-grade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Çətinlik səviyyəsi</label>
+                <select id="edit-question-difficulty">
+                    <option value="easy">Asan</option>
+                    <option value="medium">Orta</option>
+                    <option value="hard">Çətin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sual mətni</label>
+                <textarea id="edit-question-text" placeholder="Sualı daxil edin..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Variantlar (hər sətirə bir variant)</label>
+                <textarea id="edit-question-options" placeholder="Variant A&#10;Variant B&#10;Variant C&#10;Variant D"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Düzgün cavab (A, B, C və ya D)</label>
+                <input type="text" id="edit-question-correct" maxlength="1" placeholder="Məsələn: A">
+            </div>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline" onclick="closeEditQuestionModal()">Ləğv et</button>
+                <button class="btn" onclick="updateQuestion()">Yadda saxla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test həll etmə modalı -->
+    <div id="testModal" class="modal">
+        <div class="modal-content" style="max-width:800px;">
+            <div class="test-header">
+                <h3 id="test-title">Test</h3>
+                <span id="test-timer">00:00</span>
+            </div>
+            <div class="question-container">
+                <p id="test-question-text"><strong></strong></p>
+                <div class="options-list" id="test-options"></div>
+            </div>
+            <div class="test-navigation">
+                <button class="btn btn-outline" id="prevBtn" onclick="previousQuestion()">← Əvvəlki</button>
+                <span id="question-counter">1 / 10</span>
+                <button class="btn btn-outline" id="nextBtn" onclick="nextQuestion()">Növbəti →</button>
             </div>
         </div>
     </div>
@@ -707,22 +850,67 @@
 
                 <!-- Tabs -->
                 <div class="flex gap-4 mb-4 flex-wrap">
-                    <button class="btn btn-outline" onclick="showUserTab('tests')">📚 Testlər (Fənlər üzrə)</button>
+                    <button class="btn btn-outline" onclick="showUserTab('test')">📚 Test həll et</button>
                     <button class="btn btn-outline" onclick="showUserTab('questions')">❓ İstifadəçi Sualları</button>
                     <button class="btn btn-outline" onclick="showUserTab('results')">📊 Nəticələrim</button>
                     <button class="btn btn-outline" onclick="showUserTab('profile')">👤 Profil</button>
                 </div>
 
-                <!-- Testlər bölməsi -->
-                <div id="user-tests-section">
-                    <h3 class="mb-4" style="color:white;">Fənlər üzrə Testlər</h3>
-                    <div class="subject-tabs" id="subject-tabs"></div>
-                    <div id="tests-list" class="questions-grid"></div>
+                <!-- Test həll et bölməsi -->
+                <div id="user-test-section">
+                    <h3 class="mb-4" style="color:white;">Test parametrlərini seçin</h3>
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label>Sinif</label>
+                            <select id="test-grade">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Fənn</label>
+                            <select id="test-subject">
+                                <option value="Riyaziyyat">Riyaziyyat</option>
+                                <option value="Fizika">Fizika</option>
+                                <option value="Kimya">Kimya</option>
+                                <option value="Biologiya">Biologiya</option>
+                                <option value="Tarix">Tarix</option>
+                                <option value="Coğrafiya">Coğrafiya</option>
+                                <option value="Ədəbiyyat">Ədəbiyyat</option>
+                                <option value="İngilis dili">İngilis dili</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Çətinlik</label>
+                            <select id="test-difficulty">
+                                <option value="easy">Asan</option>
+                                <option value="medium">Orta</option>
+                                <option value="hard">Çətin</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Sual sayı</label>
+                            <input type="number" id="test-question-count" min="1" max="50" value="10">
+                        </div>
+                        <div class="filter-item">
+                            <button class="btn" onclick="startFilteredTest()">Testə başla</button>
+                        </div>
+                    </div>
+                    <div id="test-info" style="color:white;"></div>
                 </div>
 
                 <!-- İstifadəçi sualları bölməsi -->
                 <div id="user-questions-section" class="hidden">
-                    <h3 class="mb-4" style="color:white;">İstifadəçilərin əlavə etdiyi suallar</h3>
+                    <h3 class="mb-4" style="color:white;">İstifadəçilərin əlavə etdiyi suallar (təsdiqlənmiş)</h3>
                     <div id="user-questions-list" class="questions-grid"></div>
                 </div>
 
@@ -752,8 +940,8 @@
                 <nav>
                     <ul>
                         <li><a href="#" onclick="showAdminSection('users')" class="active" id="nav-users">👥 İstifadəçilər</a></li>
-                        <li><a href="#" onclick="showAdminSection('tests')" id="nav-tests">📝 Testlər (Fənlər)</a></li>
-                        <li><a href="#" onclick="showAdminSection('questions')" id="nav-questions">❓ İstifadəçi Sualları</a></li>
+                        <li><a href="#" onclick="showAdminSection('questions')" id="nav-questions">❓ Suallar (Təsdiq)</a></li>
+                        <li><a href="#" onclick="showAdminSection('allquestions')" id="nav-allquestions">📚 Bütün Suallar</a></li>
                         <li><a href="#" onclick="showAdminSection('stats')" id="nav-stats">📈 Statistika</a></li>
                         <li><a href="#" onclick="showAdminSection('rankings')" id="nav-rankings">🏆 Reytinq</a></li>
                         <li><a href="#" onclick="logout()">🚪 Çıxış</a></li>
@@ -787,17 +975,61 @@
                     </div>
                 </div>
 
-                <!-- Test İdarəetmə Bölməsi (Fənlər) -->
-                <div id="admin-tests-section" class="hidden">
-                    <h2 style="color: white;">Test İdarəetmə (Fənlər üzrə)</h2>
-                    <div class="subject-tabs" id="admin-subject-tabs"></div>
-                    <div id="tests-list-admin" class="questions-grid"></div>
+                <!-- Təsdiq gözləyən suallar -->
+                <div id="admin-questions-section" class="hidden">
+                    <h2 style="color: white;">Təsdiq Gözləyən Suallar</h2>
+                    <div id="pending-questions-list" class="questions-grid"></div>
                 </div>
 
-                <!-- İstifadəçi Sualları İdarəetmə -->
-                <div id="admin-questions-section" class="hidden">
-                    <h2 style="color: white;">İstifadəçi Sualları (Təsdiq gözləyənlər)</h2>
-                    <div id="pending-questions-list" class="questions-grid"></div>
+                <!-- Bütün suallar (admin idarəsi) -->
+                <div id="admin-allquestions-section" class="hidden">
+                    <div class="flex justify-between align-center mb-4">
+                        <h2 style="color: white;">Bütün Suallar</h2>
+                        <button class="btn" onclick="showAdminAddQuestionModal()">+ Yeni Sual</button>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label>Filtr (sinif)</label>
+                            <select id="filter-grade" onchange="filterAllQuestions()">
+                                <option value="all">Hamısı</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Fənn</label>
+                            <select id="filter-subject" onchange="filterAllQuestions()">
+                                <option value="all">Hamısı</option>
+                                <option value="Riyaziyyat">Riyaziyyat</option>
+                                <option value="Fizika">Fizika</option>
+                                <option value="Kimya">Kimya</option>
+                                <option value="Biologiya">Biologiya</option>
+                                <option value="Tarix">Tarix</option>
+                                <option value="Coğrafiya">Coğrafiya</option>
+                                <option value="Ədəbiyyat">Ədəbiyyat</option>
+                                <option value="İngilis dili">İngilis dili</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Çətinlik</label>
+                            <select id="filter-difficulty" onchange="filterAllQuestions()">
+                                <option value="all">Hamısı</option>
+                                <option value="easy">Asan</option>
+                                <option value="medium">Orta</option>
+                                <option value="hard">Çətin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="all-questions-list" class="questions-grid"></div>
                 </div>
 
                 <!-- Statistika Bölməsi -->
@@ -834,17 +1066,16 @@
         // GLOBAL DƏYİŞƏNLƏR VƏ UTILITLAR
         // ==============================
         const STORAGE_KEYS = {
-            USERS: 'test_users_v2',
-            TESTS: 'test_tests_v2',
-            USER_QUESTIONS: 'user_questions_v2',
-            CURRENT_USER: 'current_user_v2',
-            LOGIN_ATTEMPTS: 'login_attempts_v2',
-            BLOCK_UNTIL: 'block_until_v2',
-            REMEMBER: 'remember_me_v2',
-            RESULTS: 'test_results_v2'
+            USERS: 'test_users_v3',
+            QUESTIONS: 'test_questions_v3',      // bütün suallar
+            CURRENT_USER: 'current_user_v3',
+            LOGIN_ATTEMPTS: 'login_attempts_v3',
+            BLOCK_UNTIL: 'block_until_v3',
+            REMEMBER: 'remember_me_v3',
+            RESULTS: 'test_results_v3'
         };
 
-        // Admin məlumatları (hardcoded) - yeni şifrə: 123456789Araz
+        // Admin məlumatları (hardcoded)
         const ADMIN = {
             username: 'Araz',
             password: '123456789Araz'
@@ -852,6 +1083,10 @@
 
         // Fənlər siyahısı
         const SUBJECTS = ['Riyaziyyat', 'Fizika', 'Kimya', 'Biologiya', 'Tarix', 'Coğrafiya', 'Ədəbiyyat', 'İngilis dili'];
+        // Siniflər
+        const GRADES = [1,2,3,4,5,6,7,8,9,10,11];
+        // Çətinliklər
+        const DIFFICULTIES = ['easy', 'medium', 'hard'];
 
         // Sadə hash funksiyası (simulyasiya)
         function simpleHash(str) {
@@ -1078,7 +1313,7 @@
                     document.getElementById('user-page').classList.remove('hidden');
                     document.getElementById('admin-page').classList.add('hidden');
                     document.getElementById('user-fullname').textContent = currentUser.fullname || currentUser.username;
-                    showUserTab('tests');
+                    showUserTab('test');
                     updateProfileInfo();
                 }
             } else {
@@ -1105,64 +1340,59 @@
             document.getElementById('admin-page').classList.remove('hidden');
             loadUsersTable();
             loadStats();
-            renderAdminSubjectTabs();
+            showAdminSection('users'); // default olaraq users
         }
 
         // ==============================
-        // FƏNLƏR VƏ TESTLƏR (Nümunə suallar)
+        // SUALLARIN İDARƏ EDİLMƏSİ
         // ==============================
-        function getTests() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEYS.TESTS)) || [];
+        function getQuestions() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.QUESTIONS)) || [];
         }
 
-        function saveTests(tests) {
-            localStorage.setItem(STORAGE_KEYS.TESTS, JSON.stringify(tests));
+        function saveQuestions(questions) {
+            localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(questions));
         }
 
-        // Hər fənn üçün 50 suallı test yarat (daha real suallar)
-        function initSubjectTests() {
-            let tests = getTests();
-            if (tests.length === 0) {
-                SUBJECTS.forEach(subject => {
-                    const questions = [];
-                    for (let i = 1; i <= 50; i++) {
-                        let questionText, options, correct;
-                        // Nümunə suallar - fənnə görə dəyişir
-                        if (subject === 'Riyaziyyat') {
-                            questionText = `${i}. 2 + 2 = ?`;
-                            options = ['3', '4', '5', '6'];
-                            correct = 'B';
-                        } else if (subject === 'Fizika') {
-                            questionText = `${i}. Hansı əsas vahiddir?`;
-                            options = ['Newton', 'Joule', 'Metr', 'Watt'];
-                            correct = 'C';
-                        } else {
-                            questionText = `${subject} fənnindən nümunə sual ${i}`;
-                            options = ['Cavab A', 'Cavab B', 'Cavab C', 'Cavab D'];
-                            correct = String.fromCharCode(65 + (i % 4));
+        // Nümunə suallar yarat (hər fənn, hər sinif, hər çətinlik üçün 50 sual)
+        function initSampleQuestions() {
+            let questions = getQuestions();
+            if (questions.length === 0) {
+                let newQuestions = [];
+                let id = 1;
+                for (let grade of GRADES) {
+                    for (let subject of SUBJECTS) {
+                        for (let diff of DIFFICULTIES) {
+                            for (let i = 1; i <= 50; i++) {
+                                let questionText, options, correct;
+                                // Sadə nümunə suallar
+                                if (subject === 'Riyaziyyat') {
+                                    questionText = `${grade}-ci sinif ${diff} riyaziyyat sual ${i}: 2 + 2 = ?`;
+                                    options = ['3', '4', '5', '6'];
+                                    correct = 'B';
+                                } else {
+                                    questionText = `${grade}-ci sinif ${subject} (${diff}) nümunə sual ${i}`;
+                                    options = ['Cavab A', 'Cavab B', 'Cavab C', 'Cavab D'];
+                                    correct = String.fromCharCode(65 + (i % 4));
+                                }
+                                newQuestions.push({
+                                    id: id++,
+                                    grade: grade,
+                                    subject: subject,
+                                    difficulty: diff,
+                                    question: questionText,
+                                    options: options,
+                                    correct: correct,
+                                    author: 'system',
+                                    approved: true,
+                                    createdAt: new Date().toISOString()
+                                });
+                            }
                         }
-                        questions.push({
-                            id: `${subject}_${i}`,
-                            question: questionText,
-                            options: options,
-                            correct: correct,
-                            difficulty: i % 3 === 0 ? 'hard' : (i % 3 === 1 ? 'easy' : 'medium')
-                        });
                     }
-                    tests.push({
-                        id: `test_${subject}`,
-                        name: subject,
-                        subject: subject,
-                        questions: questions
-                    });
-                });
-                saveTests(tests);
+                }
+                saveQuestions(newQuestions);
             }
-        }
-
-        // İstifadəçi sualları
-        function getUserQuestions() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_QUESTIONS)) || [];
         }
 
         // Test nəticələri
@@ -1178,15 +1408,13 @@
         // İSTİFADƏÇİ PANELİ
         // ==============================
         window.showUserTab = function(tab) {
-            document.getElementById('user-tests-section').classList.add('hidden');
+            document.getElementById('user-test-section').classList.add('hidden');
             document.getElementById('user-questions-section').classList.add('hidden');
             document.getElementById('user-results-section').classList.add('hidden');
             document.getElementById('user-profile-section').classList.add('hidden');
 
-            if (tab === 'tests') {
-                document.getElementById('user-tests-section').classList.remove('hidden');
-                renderSubjectTabs();
-                showSubjectTests(SUBJECTS[0]);
+            if (tab === 'test') {
+                document.getElementById('user-test-section').classList.remove('hidden');
             } else if (tab === 'questions') {
                 document.getElementById('user-questions-section').classList.remove('hidden');
                 loadUserQuestions();
@@ -1199,224 +1427,13 @@
             }
         };
 
-        function renderSubjectTabs() {
-            const container = document.getElementById('subject-tabs');
-            container.innerHTML = '';
-            SUBJECTS.forEach(subject => {
-                const tab = document.createElement('span');
-                tab.className = 'subject-tab';
-                tab.textContent = subject;
-                tab.onclick = () => {
-                    document.querySelectorAll('.subject-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    showSubjectTests(subject);
-                };
-                container.appendChild(tab);
-            });
-            if (SUBJECTS.length > 0) {
-                container.firstChild.classList.add('active');
-            }
-        }
-
-        function showSubjectTests(subject) {
-            const tests = getTests();
-            const test = tests.find(t => t.subject === subject);
-            const container = document.getElementById('tests-list');
-            if (!test) {
-                container.innerHTML = '<p style="color:white;">Bu fənn üçün test mövcud deyil.</p>';
-                return;
-            }
-            container.innerHTML = `
-                <div class="question-card">
-                    <h4>${test.name} testi</h4>
-                    <p>${test.questions.length} sual</p>
-                    <button class="btn btn-sm" onclick="startTest('${test.id}')">Testə başla</button>
-                </div>
-            `;
-        }
-
-        // Test həll etmə dəyişənləri
-        let currentTest = null;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let testStartTime = null;
-
-        window.startTest = function(testId) {
-            const tests = getTests();
-            currentTest = tests.find(t => t.id === testId);
-            if (!currentTest) return;
-            currentQuestionIndex = 0;
-            userAnswers = new Array(currentTest.questions.length).fill(null);
-            testStartTime = Date.now();
-            showTestModal();
-        };
-
-        function showTestModal() {
-            // Test modalını yarat və göstər
-            const modal = document.createElement('div');
-            modal.className = 'modal show';
-            modal.id = 'testModal';
-            const question = currentTest.questions[currentQuestionIndex];
-            const progress = `${currentQuestionIndex+1} / ${currentTest.questions.length}`;
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width:800px;">
-                    <div class="test-header">
-                        <h3>${currentTest.name} - Sual ${progress}</h3>
-                        <span id="test-timer">00:00</span>
-                    </div>
-                    <div class="question-container">
-                        <p><strong>${question.question}</strong></p>
-                        <div class="options-list" id="test-options">
-                            ${question.options.map((opt, idx) => `
-                                <div class="option-item ${userAnswers[currentQuestionIndex] === String.fromCharCode(65+idx) ? 'selected' : ''}" data-value="${String.fromCharCode(65+idx)}">
-                                    <span>${String.fromCharCode(65+idx)}.</span> ${opt}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    <div class="test-navigation">
-                        <button class="btn btn-outline" onclick="previousQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>← Əvvəlki</button>
-                        <span style="color:white;">Sual ${progress}</span>
-                        <button class="btn btn-outline" onclick="nextQuestion()">${currentQuestionIndex === currentTest.questions.length-1 ? 'Bitir' : 'Növbəti →'}</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-
-            // Timer başlat
-            startTimer();
-
-            // Option click hadisələri
-            modal.querySelectorAll('.option-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const value = this.dataset.value;
-                    userAnswers[currentQuestionIndex] = value;
-                    // Seçilmiş class-ı yenilə
-                    modal.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-
-            // Əvvəlki, növbəti funksiyalarını window-a əlavə et (modal içində istifadə üçün)
-            window.previousQuestion = function() {
-                if (currentQuestionIndex > 0) {
-                    currentQuestionIndex--;
-                    updateTestModal();
-                }
-            };
-            window.nextQuestion = function() {
-                if (currentQuestionIndex < currentTest.questions.length - 1) {
-                    currentQuestionIndex++;
-                    updateTestModal();
-                } else {
-                    finishTest();
-                }
-            };
-        }
-
-        function startTimer() {
-            const timerEl = document.getElementById('test-timer');
-            const interval = setInterval(() => {
-                if (!document.getElementById('testModal')) {
-                    clearInterval(interval);
-                    return;
-                }
-                const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-            }, 1000);
-        }
-
-        function updateTestModal() {
-            const modal = document.getElementById('testModal');
-            if (!modal) return;
-            const question = currentTest.questions[currentQuestionIndex];
-            const progress = `${currentQuestionIndex+1} / ${currentTest.questions.length}`;
-            modal.querySelector('.test-header h3').innerHTML = `${currentTest.name} - Sual ${progress}`;
-            modal.querySelector('.question-container p').innerHTML = `<strong>${question.question}</strong>`;
-            const optionsHtml = question.options.map((opt, idx) => `
-                <div class="option-item ${userAnswers[currentQuestionIndex] === String.fromCharCode(65+idx) ? 'selected' : ''}" data-value="${String.fromCharCode(65+idx)}">
-                    <span>${String.fromCharCode(65+idx)}.</span> ${opt}
-                </div>
-            `).join('');
-            modal.querySelector('.options-list').innerHTML = optionsHtml;
-            modal.querySelector('.test-navigation span').textContent = `Sual ${progress}`;
-            modal.querySelector('.test-navigation button:first-child').disabled = currentQuestionIndex === 0;
-            modal.querySelector('.test-navigation button:last-child').textContent = currentQuestionIndex === currentTest.questions.length-1 ? 'Bitir' : 'Növbəti →';
-
-            // Yenidən event listener əlavə et
-            modal.querySelectorAll('.option-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const value = this.dataset.value;
-                    userAnswers[currentQuestionIndex] = value;
-                    modal.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-        }
-
-        function finishTest() {
-            // Cavabları hesabla
-            let correctCount = 0;
-            currentTest.questions.forEach((q, index) => {
-                if (userAnswers[index] === q.correct) correctCount++;
-            });
-            const score = Math.round((correctCount / currentTest.questions.length) * 100);
-            const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
-
-            // Nəticəni yadda saxla
-            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
-            const results = getUserResults();
-            results.push({
-                username: currentUser.username,
-                testName: currentTest.name,
-                score: score,
-                correct: correctCount,
-                total: currentTest.questions.length,
-                date: new Date().toISOString(),
-                timeSpent: elapsed
-            });
-            saveUserResults(results);
-
-            // İstifadəçinin balını artır
-            const users = getUsers();
-            const user = users.find(u => u.username === currentUser.username);
-            if (user) {
-                user.score = (user.score || 0) + score;
-                saveUsers(users);
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
-            }
-
-            // Modalı bağla və nəticəni göstər
-            document.getElementById('testModal').remove();
-            showTestResult(score, correctCount, currentTest.questions.length, elapsed);
-        }
-
-        function showTestResult(score, correct, total, time) {
-            const modal = document.getElementById('testResultModal');
-            const content = document.getElementById('testResultContent');
-            content.innerHTML = `
-                <div class="result-card">
-                    <div class="result-score">${score}%</div>
-                    <p>Düzgün cavablar: ${correct} / ${total}</p>
-                    <p>Vaxt: ${Math.floor(time/60)} dəqiqə ${time%60} saniyə</p>
-                </div>
-            `;
-            modal.classList.add('show');
-        }
-
-        window.closeTestResultModal = function() {
-            document.getElementById('testResultModal').classList.remove('show');
-        };
-
-        // İstifadəçi suallarını yüklə
+        // İstifadəçi suallarını yüklə (təsdiqlənmiş)
         function loadUserQuestions() {
-            const questions = getUserQuestions().filter(q => q.approved);
+            const questions = getQuestions().filter(q => q.approved && q.author !== 'system');
             const container = document.getElementById('user-questions-list');
             container.innerHTML = '';
             if (questions.length === 0) {
-                container.innerHTML = '<p style="color:white;">Hələ heç bir sual yoxdur.</p>';
+                container.innerHTML = '<p style="color:white;">Hələ heç bir istifadəçi sualı yoxdur.</p>';
                 return;
             }
             questions.forEach(q => {
@@ -1428,6 +1445,7 @@
                     <div class="question-meta">
                         <span class="difficulty ${q.difficulty}">${q.difficulty}</span>
                         <span>Fənn: ${q.subject}</span>
+                        <span>Sinif: ${q.grade}</span>
                         <span>Əlavə edən: ${q.author}</span>
                     </div>
                     <button class="btn btn-sm mt-2" onclick="answerUserQuestion('${q.id}')">Cavabla</button>
@@ -1450,7 +1468,7 @@
                 const card = document.createElement('div');
                 card.className = 'question-card';
                 card.innerHTML = `
-                    <h4>${r.testName}</h4>
+                    <h4>${r.subject} - ${r.grade}. sinif (${r.difficulty})</h4>
                     <p>Bal: ${r.score}% (${r.correct}/${r.total})</p>
                     <p>${new Date(r.date).toLocaleString('az')}</p>
                 `;
@@ -1459,73 +1477,181 @@
         }
 
         // ==============================
-        // SUAL ƏLAVƏ ETMƏ (İSTİFADƏÇİ)
+        // TEST HƏLL ETMƏ (filter əsaslı)
         // ==============================
-        window.showAddQuestionModal = function() {
-            document.getElementById('addQuestionModal').classList.add('show');
+        let currentTestQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let testStartTime = null;
+        let testParams = {};
+
+        window.startFilteredTest = function() {
+            const grade = parseInt(document.getElementById('test-grade').value);
+            const subject = document.getElementById('test-subject').value;
+            const difficulty = document.getElementById('test-difficulty').value;
+            const count = parseInt(document.getElementById('test-question-count').value);
+
+            // Sualları filtrlə
+            const questions = getQuestions().filter(q => 
+                q.approved && 
+                q.grade === grade && 
+                q.subject === subject && 
+                q.difficulty === difficulty
+            );
+
+            if (questions.length === 0) {
+                showToast('Bu kateqoriyada sual yoxdur', 'warning');
+                return;
+            }
+
+            // Random seç
+            const shuffled = questions.sort(() => 0.5 - Math.random());
+            currentTestQuestions = shuffled.slice(0, Math.min(count, shuffled.length));
+            
+            if (currentTestQuestions.length === 0) {
+                showToast('Kifayət qədər sual yoxdur', 'warning');
+                return;
+            }
+
+            testParams = { grade, subject, difficulty };
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentTestQuestions.length).fill(null);
+            testStartTime = Date.now();
+
+            showTestModal();
         };
 
-        window.closeAddQuestionModal = function() {
-            document.getElementById('addQuestionModal').classList.remove('show');
+        function showTestModal() {
+            const modal = document.getElementById('testModal');
+            modal.classList.add('show');
+            updateTestModalContent();
+        }
+
+        function updateTestModalContent() {
+            const question = currentTestQuestions[currentQuestionIndex];
+            document.getElementById('test-title').textContent = `${testParams.subject} - ${testParams.grade}. sinif (${testParams.difficulty})`;
+            document.getElementById('test-question-text').innerHTML = `<strong>${question.question}</strong>`;
+            const optionsHtml = question.options.map((opt, idx) => `
+                <div class="option-item ${userAnswers[currentQuestionIndex] === String.fromCharCode(65+idx) ? 'selected' : ''}" data-value="${String.fromCharCode(65+idx)}">
+                    <span>${String.fromCharCode(65+idx)}.</span> ${opt}
+                </div>
+            `).join('');
+            document.getElementById('test-options').innerHTML = optionsHtml;
+            document.getElementById('question-counter').textContent = `${currentQuestionIndex+1} / ${currentTestQuestions.length}`;
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === currentTestQuestions.length-1 ? 'Bitir' : 'Növbəti →';
+
+            // Option click
+            document.querySelectorAll('#test-options .option-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    userAnswers[currentQuestionIndex] = value;
+                    document.querySelectorAll('#test-options .option-item').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Timer
+            startTimer();
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('test-timer');
+            const interval = setInterval(() => {
+                if (!document.getElementById('testModal').classList.contains('show')) {
+                    clearInterval(interval);
+                    return;
+                }
+                const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        window.previousQuestion = function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateTestModalContent();
+            }
         };
 
-        window.saveUserQuestion = function() {
-            const subject = document.getElementById('new-question-subject').value;
-            const text = document.getElementById('new-question-text').value.trim();
-            const optionsText = document.getElementById('new-question-options').value.trim();
-            const correct = document.getElementById('new-question-correct').value.trim().toUpperCase();
-            const difficulty = document.getElementById('new-question-difficulty').value;
-
-            if (!text || !optionsText || !correct) {
-                showToast('Bütün sahələri doldurun', 'error');
-                return;
+        window.nextQuestion = function() {
+            if (currentQuestionIndex < currentTestQuestions.length - 1) {
+                currentQuestionIndex++;
+                updateTestModalContent();
+            } else {
+                finishTest();
             }
+        };
 
-            const options = optionsText.split('\n').map(s => s.trim()).filter(s => s);
-            if (options.length < 2) {
-                showToast('Ən az 2 variant daxil edin', 'error');
-                return;
-            }
+        function finishTest() {
+            let correctCount = 0;
+            currentTestQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) correctCount++;
+            });
+            const score = Math.round((correctCount / currentTestQuestions.length) * 100);
+            const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
 
-            if (!['A','B','C','D'].includes(correct)) {
-                showToast('Düzgün cavab A, B, C və ya D olmalıdır', 'error');
-                return;
-            }
-
+            // Nəticəni yadda saxla
             const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
-            const questions = getUserQuestions();
-            const newQuestion = {
-                id: Date.now().toString(),
-                subject: subject,
-                question: text,
-                options: options,
-                correct: correct,
-                difficulty: difficulty,
-                author: currentUser.username,
-                authorFullname: currentUser.fullname,
+            const results = getUserResults();
+            results.push({
+                username: currentUser.username,
+                subject: testParams.subject,
+                grade: testParams.grade,
+                difficulty: testParams.difficulty,
+                score: score,
+                correct: correctCount,
+                total: currentTestQuestions.length,
                 date: new Date().toISOString(),
-                approved: false,
-                stats: { attempts: 0, correct: 0 }
-            };
-            questions.push(newQuestion);
-            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+                timeSpent: elapsed
+            });
+            saveUserResults(results);
 
-            showToast('Sualınız admin təsdiqinə göndərildi', 'success');
-            closeAddQuestionModal();
+            // İstifadəçinin balını artır
+            const users = getUsers();
+            const user = users.find(u => u.username === currentUser.username);
+            if (user) {
+                user.score = (user.score || 0) + score;
+                saveUsers(users);
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+            }
+
+            // Modalı bağla və nəticəni göstər
+            document.getElementById('testModal').classList.remove('show');
+            showTestResult(score, correctCount, currentTestQuestions.length, elapsed);
+        }
+
+        function showTestResult(score, correct, total, time) {
+            const modal = document.getElementById('testResultModal');
+            const content = document.getElementById('testResultContent');
+            content.innerHTML = `
+                <div class="result-card">
+                    <div class="result-score">${score}%</div>
+                    <p>Düzgün cavablar: ${correct} / ${total}</p>
+                    <p>Vaxt: ${Math.floor(time/60)} dəqiqə ${time%60} saniyə</p>
+                </div>
+            `;
+            modal.classList.add('show');
+        }
+
+        window.closeTestResultModal = function() {
+            document.getElementById('testResultModal').classList.remove('show');
         };
 
         // ==============================
-        // SUAL CAVABLAMA (İstifadəçi sualı)
+        // İSTİFADƏÇİ SUALI CAVABLAMA (əlavə suallar)
         // ==============================
         let currentAnswerQuestionId = null;
 
         window.answerUserQuestion = function(questionId) {
-            const questions = getUserQuestions().filter(q => q.approved);
-            const q = questions.find(q => q.id === questionId);
+            const questions = getQuestions().filter(q => q.approved);
+            const q = questions.find(q => q.id == questionId);
             if (!q) return;
 
             currentAnswerQuestionId = questionId;
-            document.getElementById('answer-question-title').textContent = `Sual (${q.subject})`;
+            document.getElementById('answer-question-title').textContent = `Sual (${q.subject}, ${q.grade}. sinif)`;
             document.getElementById('answer-question-text').textContent = q.question;
 
             const optionsHtml = q.options.map((opt, idx) => `
@@ -1548,15 +1674,12 @@
                 return;
             }
 
-            const questions = getUserQuestions();
-            const q = questions.find(q => q.id === currentAnswerQuestionId);
+            const questions = getQuestions();
+            const q = questions.find(q => q.id == currentAnswerQuestionId);
             if (!q) return;
 
             const isCorrect = selected.value === q.correct;
-            q.stats.attempts++;
-            if (isCorrect) q.stats.correct++;
-            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
-
+            // Sualın statistikasını yenilə (əlavə etmək olar, amma hələlik sadə)
             if (isCorrect) {
                 const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
                 const users = getUsers();
@@ -1579,6 +1702,63 @@
         };
 
         // ==============================
+        // İSTİFADƏÇİ SUALI ƏLAVƏ ETMƏ
+        // ==============================
+        window.showAddQuestionModal = function() {
+            document.getElementById('addQuestionModal').classList.add('show');
+        };
+
+        window.closeAddQuestionModal = function() {
+            document.getElementById('addQuestionModal').classList.remove('show');
+        };
+
+        window.saveUserQuestion = function() {
+            const subject = document.getElementById('new-question-subject').value;
+            const grade = parseInt(document.getElementById('new-question-grade').value);
+            const difficulty = document.getElementById('new-question-difficulty').value;
+            const text = document.getElementById('new-question-text').value.trim();
+            const optionsText = document.getElementById('new-question-options').value.trim();
+            const correct = document.getElementById('new-question-correct').value.trim().toUpperCase();
+
+            if (!text || !optionsText || !correct) {
+                showToast('Bütün sahələri doldurun', 'error');
+                return;
+            }
+
+            const options = optionsText.split('\n').map(s => s.trim()).filter(s => s);
+            if (options.length < 2) {
+                showToast('Ən az 2 variant daxil edin', 'error');
+                return;
+            }
+
+            if (!['A','B','C','D'].includes(correct)) {
+                showToast('Düzgün cavab A, B, C və ya D olmalıdır', 'error');
+                return;
+            }
+
+            const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+            const questions = getQuestions();
+            const newId = Date.now(); // sadə unikal id
+            const newQuestion = {
+                id: newId,
+                subject: subject,
+                grade: grade,
+                difficulty: difficulty,
+                question: text,
+                options: options,
+                correct: correct,
+                author: currentUser.username,
+                approved: false,
+                createdAt: new Date().toISOString()
+            };
+            questions.push(newQuestion);
+            saveQuestions(questions);
+
+            showToast('Sualınız admin təsdiqinə göndərildi', 'success');
+            closeAddQuestionModal();
+        };
+
+        // ==============================
         // ADMIN PANEL FUNKSİYALARI
         // ==============================
         window.showAdminSection = function(section) {
@@ -1586,21 +1766,20 @@
             document.getElementById(`nav-${section}`).classList.add('active');
 
             document.getElementById('admin-users-section').classList.add('hidden');
-            document.getElementById('admin-tests-section').classList.add('hidden');
             document.getElementById('admin-questions-section').classList.add('hidden');
+            document.getElementById('admin-allquestions-section').classList.add('hidden');
             document.getElementById('admin-stats-section').classList.add('hidden');
             document.getElementById('admin-rankings-section').classList.add('hidden');
 
             if (section === 'users') {
                 document.getElementById('admin-users-section').classList.remove('hidden');
                 loadUsersTable();
-            } else if (section === 'tests') {
-                document.getElementById('admin-tests-section').classList.remove('hidden');
-                renderAdminSubjectTabs();
-                showAdminSubjectTests(SUBJECTS[0]);
             } else if (section === 'questions') {
                 document.getElementById('admin-questions-section').classList.remove('hidden');
                 loadPendingQuestions();
+            } else if (section === 'allquestions') {
+                document.getElementById('admin-allquestions-section').classList.remove('hidden');
+                loadAllQuestions();
             } else if (section === 'stats') {
                 document.getElementById('admin-stats-section').classList.remove('hidden');
                 loadStats();
@@ -1609,87 +1788,6 @@
                 document.getElementById('admin-rankings-section').classList.remove('hidden');
                 loadRankings();
             }
-        };
-
-        function renderAdminSubjectTabs() {
-            const container = document.getElementById('admin-subject-tabs');
-            if (!container) return;
-            container.innerHTML = '';
-            SUBJECTS.forEach(subject => {
-                const tab = document.createElement('span');
-                tab.className = 'subject-tab';
-                tab.textContent = subject;
-                tab.onclick = () => {
-                    document.querySelectorAll('#admin-subject-tabs .subject-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    showAdminSubjectTests(subject);
-                };
-                container.appendChild(tab);
-            });
-            if (SUBJECTS.length > 0) {
-                container.firstChild.classList.add('active');
-            }
-        }
-
-        function showAdminSubjectTests(subject) {
-            const tests = getTests();
-            const test = tests.find(t => t.subject === subject);
-            const container = document.getElementById('tests-list-admin');
-            if (!test) {
-                container.innerHTML = '<p style="color:white;">Test mövcud deyil.</p>';
-                return;
-            }
-            container.innerHTML = `
-                <div class="question-card">
-                    <h4>${test.name}</h4>
-                    <p>${test.questions.length} sual</p>
-                    <div class="flex gap-2 mt-2 flex-wrap">
-                        <button class="btn btn-sm" onclick="editTest('${test.id}')">Redaktə</button>
-                        <button class="btn btn-sm btn-outline" onclick="deleteTest('${test.id}')">Sil</button>
-                        <button class="btn btn-sm btn-outline" onclick="exportTest('${test.id}')">JSON ixrac</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.editTest = function(testId) {
-            // Sadə redaktə: sualları JSON formatında göstər
-            const tests = getTests();
-            const test = tests.find(t => t.id === testId);
-            if (!test) return;
-            const newQuestions = prompt('Sualları JSON formatında daxil edin:', JSON.stringify(test.questions, null, 2));
-            if (newQuestions) {
-                try {
-                    test.questions = JSON.parse(newQuestions);
-                    saveTests(tests);
-                    showToast('Test yeniləndi', 'success');
-                } catch (e) {
-                    showToast('Yanlış JSON formatı', 'error');
-                }
-            }
-        };
-
-        window.deleteTest = async function(testId) {
-            const confirmed = await showConfirm('Sil', 'Testi silmək istədiyinizə əminsiniz?');
-            if (!confirmed) return;
-            let tests = getTests();
-            tests = tests.filter(t => t.id !== testId);
-            saveTests(tests);
-            showAdminSubjectTests(SUBJECTS[0]);
-            showToast('Test silindi', 'success');
-        };
-
-        window.exportTest = function(testId) {
-            const tests = getTests();
-            const test = tests.find(t => t.id === testId);
-            if (!test) return;
-            const dataStr = JSON.stringify(test, null, 2);
-            const blob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${test.name}.json`;
-            a.click();
         };
 
         function loadUsersTable(filter = '') {
@@ -1752,7 +1850,7 @@
 
         // Təsdiq gözləyən suallar
         function loadPendingQuestions() {
-            const questions = getUserQuestions().filter(q => !q.approved);
+            const questions = getQuestions().filter(q => !q.approved);
             const container = document.getElementById('pending-questions-list');
             container.innerHTML = '';
             if (questions.length === 0) {
@@ -1769,6 +1867,7 @@
                     <div class="question-meta">
                         <span class="difficulty ${q.difficulty}">${q.difficulty}</span>
                         <span>Fənn: ${q.subject}</span>
+                        <span>Sinif: ${q.grade}</span>
                         <span>Əlavə edən: ${q.author}</span>
                     </div>
                     <div class="flex gap-2 mt-2">
@@ -1781,36 +1880,202 @@
         }
 
         window.approveQuestion = function(questionId) {
-            const questions = getUserQuestions();
-            const q = questions.find(q => q.id === questionId);
+            const questions = getQuestions();
+            const q = questions.find(q => q.id == questionId);
             if (q) {
                 q.approved = true;
-                localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+                saveQuestions(questions);
                 loadPendingQuestions();
                 showToast('Sual təsdiqləndi', 'success');
             }
         };
 
         window.rejectQuestion = function(questionId) {
-            let questions = getUserQuestions();
-            questions = questions.filter(q => q.id !== questionId);
-            localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify(questions));
+            let questions = getQuestions();
+            questions = questions.filter(q => q.id != questionId);
+            saveQuestions(questions);
             loadPendingQuestions();
             showToast('Sual rədd edildi', 'info');
+        };
+
+        // Bütün suallar (admin idarəsi)
+        function loadAllQuestions(filterGrade = 'all', filterSubject = 'all', filterDifficulty = 'all') {
+            let questions = getQuestions();
+            if (filterGrade !== 'all') {
+                questions = questions.filter(q => q.grade == filterGrade);
+            }
+            if (filterSubject !== 'all') {
+                questions = questions.filter(q => q.subject === filterSubject);
+            }
+            if (filterDifficulty !== 'all') {
+                questions = questions.filter(q => q.difficulty === filterDifficulty);
+            }
+            const container = document.getElementById('all-questions-list');
+            container.innerHTML = '';
+            questions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <p><strong>${q.question}</strong></p>
+                    <p>${q.options.join(' | ')}</p>
+                    <p>Düzgün cavab: ${q.correct}</p>
+                    <div class="question-meta">
+                        <span class="difficulty ${q.difficulty}">${q.difficulty}</span>
+                        <span>Fənn: ${q.subject}</span>
+                        <span>Sinif: ${q.grade}</span>
+                        <span>Müəllif: ${q.author}</span>
+                        <span>Təsdiq: ${q.approved ? '✅' : '⏳'}</span>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <button class="btn btn-sm" onclick="editQuestion('${q.id}')">Redaktə</button>
+                        <button class="btn btn-sm btn-outline" onclick="deleteQuestion('${q.id}')">Sil</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.filterAllQuestions = function() {
+            const grade = document.getElementById('filter-grade').value;
+            const subject = document.getElementById('filter-subject').value;
+            const difficulty = document.getElementById('filter-difficulty').value;
+            loadAllQuestions(grade, subject, difficulty);
+        };
+
+        window.editQuestion = function(questionId) {
+            const questions = getQuestions();
+            const q = questions.find(q => q.id == questionId);
+            if (!q) return;
+            document.getElementById('edit-question-id').value = q.id;
+            document.getElementById('edit-question-subject').value = q.subject;
+            document.getElementById('edit-question-grade').value = q.grade;
+            document.getElementById('edit-question-difficulty').value = q.difficulty;
+            document.getElementById('edit-question-text').value = q.question;
+            document.getElementById('edit-question-options').value = q.options.join('\n');
+            document.getElementById('edit-question-correct').value = q.correct;
+            document.getElementById('editQuestionModal').classList.add('show');
+        };
+
+        window.updateQuestion = function() {
+            const id = document.getElementById('edit-question-id').value;
+            const subject = document.getElementById('edit-question-subject').value;
+            const grade = parseInt(document.getElementById('edit-question-grade').value);
+            const difficulty = document.getElementById('edit-question-difficulty').value;
+            const text = document.getElementById('edit-question-text').value.trim();
+            const optionsText = document.getElementById('edit-question-options').value.trim();
+            const correct = document.getElementById('edit-question-correct').value.trim().toUpperCase();
+
+            if (!text || !optionsText || !correct) {
+                showToast('Bütün sahələri doldurun', 'error');
+                return;
+            }
+            const options = optionsText.split('\n').map(s => s.trim()).filter(s => s);
+            if (options.length < 2) {
+                showToast('Ən az 2 variant daxil edin', 'error');
+                return;
+            }
+            if (!['A','B','C','D'].includes(correct)) {
+                showToast('Düzgün cavab A, B, C və ya D olmalıdır', 'error');
+                return;
+            }
+
+            const questions = getQuestions();
+            const q = questions.find(q => q.id == id);
+            if (q) {
+                q.subject = subject;
+                q.grade = grade;
+                q.difficulty = difficulty;
+                q.question = text;
+                q.options = options;
+                q.correct = correct;
+                saveQuestions(questions);
+                showToast('Sual yeniləndi', 'success');
+                closeEditQuestionModal();
+                filterAllQuestions();
+            }
+        };
+
+        window.deleteQuestion = async function(questionId) {
+            const confirmed = await showConfirm('Sil', 'Sualı silmək istədiyinizə əminsiniz?');
+            if (!confirmed) return;
+            let questions = getQuestions();
+            questions = questions.filter(q => q.id != questionId);
+            saveQuestions(questions);
+            filterAllQuestions();
+            showToast('Sual silindi', 'success');
+        };
+
+        window.closeEditQuestionModal = function() {
+            document.getElementById('editQuestionModal').classList.remove('show');
+        };
+
+        // Admin sual əlavə etmə
+        window.showAdminAddQuestionModal = function() {
+            document.getElementById('adminAddQuestionModal').classList.add('show');
+        };
+
+        window.closeAdminAddQuestionModal = function() {
+            document.getElementById('adminAddQuestionModal').classList.remove('show');
+        };
+
+        window.saveAdminQuestion = function() {
+            const subject = document.getElementById('admin-new-question-subject').value;
+            const grade = parseInt(document.getElementById('admin-new-question-grade').value);
+            const difficulty = document.getElementById('admin-new-question-difficulty').value;
+            const text = document.getElementById('admin-new-question-text').value.trim();
+            const optionsText = document.getElementById('admin-new-question-options').value.trim();
+            const correct = document.getElementById('admin-new-question-correct').value.trim().toUpperCase();
+
+            if (!text || !optionsText || !correct) {
+                showToast('Bütün sahələri doldurun', 'error');
+                return;
+            }
+
+            const options = optionsText.split('\n').map(s => s.trim()).filter(s => s);
+            if (options.length < 2) {
+                showToast('Ən az 2 variant daxil edin', 'error');
+                return;
+            }
+
+            if (!['A','B','C','D'].includes(correct)) {
+                showToast('Düzgün cavab A, B, C və ya D olmalıdır', 'error');
+                return;
+            }
+
+            const questions = getQuestions();
+            const newId = Date.now() + Math.random();
+            const newQuestion = {
+                id: newId,
+                subject: subject,
+                grade: grade,
+                difficulty: difficulty,
+                question: text,
+                options: options,
+                correct: correct,
+                author: 'admin',
+                approved: true,
+                createdAt: new Date().toISOString()
+            };
+            questions.push(newQuestion);
+            saveQuestions(questions);
+
+            showToast('Sual əlavə edildi', 'success');
+            closeAdminAddQuestionModal();
+            filterAllQuestions();
         };
 
         function loadStats() {
             const users = getUsers();
             const activeUsers = users.filter(u => !u.blocked).length;
-            const tests = getTests();
-            const questions = getUserQuestions();
+            const questions = getQuestions();
             const pendingQuestions = questions.filter(q => !q.approved).length;
+            const totalQuestions = questions.length;
             const results = getUserResults();
 
             document.getElementById('stats-cards').innerHTML = `
                 <div class="stat-card">Ümumi istifadəçi: ${users.length}</div>
                 <div class="stat-card">Aktiv istifadəçi: ${activeUsers}</div>
-                <div class="stat-card">Ümumi fənn testi: ${tests.length}</div>
+                <div class="stat-card">Ümumi sual: ${totalQuestions}</div>
                 <div class="stat-card">Gözləyən sual: ${pendingQuestions}</div>
                 <div class="stat-card">Həll olunan test: ${results.length}</div>
             `;
@@ -1877,12 +2142,9 @@
                 ]);
             }
 
-            // Fənlər üzrə testləri yarat
-            initSubjectTests();
+            // Nümunə suallar yarat
+            initSampleQuestions();
 
-            if (!localStorage.getItem(STORAGE_KEYS.USER_QUESTIONS)) {
-                localStorage.setItem(STORAGE_KEYS.USER_QUESTIONS, JSON.stringify([]));
-            }
             if (!localStorage.getItem(STORAGE_KEYS.RESULTS)) {
                 localStorage.setItem(STORAGE_KEYS.RESULTS, JSON.stringify([]));
             }
